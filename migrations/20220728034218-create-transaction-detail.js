@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Transaction_Headers', {
+    await queryInterface.createTable('transaction_Details', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,22 +15,33 @@ module.exports = {
       document_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique:true
-      },
-      user: {
-        type: Sequelize.STRING,
-        allowNull: false,
         references:{
-          model:'Logins',
-          key:'user'
+          model:'transaction_Headers',
+          key:'document_number'
         }
       },
-      total: {
+      product_code: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      price: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      date: {
-        type: Sequelize.DATE,
+      quantity: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      unit: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      sub_total: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      currency: {
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
@@ -44,6 +55,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('transaction_Headers');
+    await queryInterface.dropTable('transaction_Details');
   }
 };
