@@ -7,5 +7,14 @@
     "discount": 10,
     "dimension": "13 cm x 10 cm",
     "unit":"PCS"
+  },
+  {
+    "product_code": "BAYKILNP",
+    "product_name": "Bay klin Pewangi",
+    "price": 18000,
+    "currency": "IDR",
+    "discount": 10,
+    "dimension": "13 cm x 10 cm",
+    "unit":"PCS"
   }
 ]

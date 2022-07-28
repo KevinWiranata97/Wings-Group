@@ -17,6 +17,10 @@ module.exports = {
         allowNull: false,
         unique:true
       },
+      product_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       user: {
         type: Sequelize.STRING,
         allowNull: false,

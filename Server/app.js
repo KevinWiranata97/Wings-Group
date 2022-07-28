@@ -1,7 +1,12 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { Login, Product, transaction_Header,transaction_Detail } = require("./models");
+const {
+  Login,
+  Product,
+  transaction_Header,
+  transaction_Detail,
+} = require("./models");
 
 const { generateToken, verifyToken } = require("./helpers/jwt");
 
@@ -86,6 +91,39 @@ app.get("/products", async (req, res) => {
   }
 });
 
+app.get("/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const findProduct = await Product.findOne({
+      where: { id },
+    });
+    if (!findProduct) {
+      throw { name: "Not Found" };
+    }
+    res.status(200).json(findProduct);
+  } catch (error) {
+    if (error.name === "Not Found") {
+      res.status(404).json({ message: '"Data not found"' });
+    }
+    res.status(500).json({ message: "internal server error" });
+  }
+});
+
+app.get("/transaction", async (req, res) => {
+  try {
+
+    const allTransaction = await transaction_Header.findAll()
+   
+    res.status(200).json(allTransaction);
+  } catch (error) {
+    if (error.name === "Not Found") {
+      res.status(404).json({ message: '"Data not found"' });
+    }
+    res.status(500).json({ message: "internal server error" });
+  }
+});
+
+
 app.use(async (req, res, next) => {
   try {
     const { access_token } = req.headers;
@@ -125,11 +163,11 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.post("/transaction/:productName", async (req, res) => {
+app.post("/transaction/:id", async (req, res) => {
   try {
-    const { productName } = req.params;
+    const { id } = req.params;
     const findProduct = await Product.findOne({
-      where: { product_name: productName },
+      where: { id },
     });
     if (!findProduct) {
       throw { name: "Not Found" };
@@ -148,33 +186,34 @@ app.post("/transaction/:productName", async (req, res) => {
       user,
       total,
       date,
+      product_name: findProduct.product_name
     });
 
     await transaction_Detail.create({
-        document_code,
-        document_number,
-        product_code: findProduct.product_code,
-        price: findProduct.price,
-        quantity: parseInt(quantity.quantity),
-        unit: findProduct.unit,
-        sub_total: total,
-        currency: findProduct.currency
-    })
-   
-    res.status(201).json({
-        message: "Transaction created successfully",
-    })
+      document_code,
+      document_number,
+      product_code: findProduct.product_code,
+      price: findProduct.price,
+      quantity: parseInt(quantity.quantity),
+      unit: findProduct.unit,
+      sub_total: total,
+      currency: findProduct.currency,
+    });
 
+    res.status(201).json({
+      message: "Transaction created successfully",
+    });
   } catch (error) {
     if (error.name === "Not Found") {
-        res.status(404).json({ message: '"Data not found"' });
-      } else if (error.name === "SequelizeValidationError") {
-        res.status(400).json({ message: error.errors[0].message });
-      } else if (error.name === "SequelizeUniqueConstraintError") {
-        res.status(400).json({ message: error.errors[0].message });
-      } else {
-        res.status(500).json({ message: "internal server error" });
-      }
+      res.status(404).json({ message: '"Data not found"' });
+    } else if (error.name === "SequelizeValidationError") {
+      res.status(400).json({ message: error.errors[0].message });
+    } else if (error.name === "SequelizeUniqueConstraintError") {
+      res.status(400).json({ message: error.errors[0].message });
+    } else {
+      res.status(500).json({ message: "internal server error" });
+    }
+    console.log(error);
   }
 });
 
