@@ -49,11 +49,7 @@ export default function HomeViews() {
             ))}
           </ul>
 
-          <div className="ml-48 mt-12">
-            <button className=" border border-gray-300 text-white px-8 py-2 font-medium rounded uppercase bg-blue-500 flex items-center gap-2 hover:text-slate-500 transition">
-              Checkout
-            </button>
-          </div>
+     
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import Navbar from "../components/navbar";
 import { useState, useEffect } from "react";
-import { useParams} from "react-router-dom";
+import { useParams, Link} from "react-router-dom";
 export default function DetailsViews() {
 
     const [products, setProducts] = useState([]);
@@ -40,10 +40,10 @@ export default function DetailsViews() {
             </div>
           </div>
 
-          <div className="ml-40 mt-12">
-            <button className=" border border-gray-300 text-white px-8 py-2 font-medium rounded uppercase bg-blue-500 flex items-center gap-2 hover:text-slate-500 transition">
+          <div className= "pr-40 ml-40 mt-12">
+            <Link to={`/checkout/${products.id}`} className=" border border-gray-300 text-white px-8 py-2 font-medium rounded uppercase bg-blue-500 flex items-center gap-2 hover:text-slate-500 transition">
               Checkout
-            </button>
+            </Link>
           </div>
         </div>
       </div>
